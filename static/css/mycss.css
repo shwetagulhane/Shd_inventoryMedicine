@@ -1,0 +1,38 @@
+#content{
+    background-color:#F5F5F5;
+    border:2px solid #00FF7F;
+    margin-top: -18px;
+    border-top: none;
+    }
+
+.titlebox{
+    font-weight: bold;
+    font-size: 20px;
+    font-family: Times New Roman;
+    padding:5px;
+    background:#00FA9A;
+}
+
+
+.texttule{
+  font-weight: bold;
+  font-family: sans-serif;
+  font-size: 16px;
+}
+.myrow{
+  padding-left:15px;
+}
+
+.mybutton{
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;  
+}
