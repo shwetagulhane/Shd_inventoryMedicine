@@ -1,0 +1,210 @@
+{% extends "Frame/framepage.html" %}
+{% block content %}
+<style>
+
+#mainTable {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+#mainTable td, #mainTable th {
+  padding: 8px;
+}
+
+#mainTable td{
+  padding: 8px;
+  font-size: 15px;
+}
+#mainTable tr:nth-child(even){background-color: #f2f2f2;}
+
+#mainTable tr:hover {background-color: #ddd;}
+
+#mainTable thead,th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  color: white;
+  font-size: 17px;
+}
+
+/* GENERAL CODE */
+
+
+/* SEPERATE CODE */
+#mainTable thead,th {
+  background-color:#778899;
+}
+/* SEPERATE CODE */
+</style>
+<script>
+function display_c(){
+var refresh=1000; // Refresh rate in milli seconds
+mytime=setTimeout('display_ct()',refresh)
+}
+
+function display_ct(){
+
+var today = new Date();
+var h = today.getHours();
+var m = today.getMinutes();
+var s = today.getSeconds();
+var dd = today.getDate();
+var mm = today.getUTCMonth()+1;
+var yy = today.getFullYear();
+m = checkTime(m);
+s = checkTime(s);
+
+dd = checkTime(dd);
+mm = checkTime(mm);
+
+
+document.getElementById('upldate').value = yy + "-" + mm + "-" + dd;
+tt=display_c();
+}
+
+
+
+// THIS IS A SCRIPT FOR ADDING AND REMOVING DOCUMENTS.
+$(document).ready(function(){
+    $("#add-row-doc").click(function(){
+
+      var dname = document.getElementById('docname').value;
+      var ddate = document.getElementById('docdate').value;
+      var dfrom = document.getElementById('docfrom').value;
+      if (dname=='' || ddate=='' || dfrom==''){
+        $('#msg').html("Please Fill All Feild");
+        return false
+      }
+      //$("#docname").prop('required',true);
+      mark = "";
+      var chk = "<tr><td><input type='checkbox' name='record'></td>";
+      mark = mark + chk
+      var docname = "<td><input type='text' name='doc_name' value='"+dname+"'  readonly></td>";
+      mark = mark + docname;
+      var docdate = "<td><input type='text' name='doc_date' value='"+ddate+"'  readonly></td>";
+      mark = mark + docdate;
+      var docfrom = "<td><input type='text' name='doc_from' value='"+dfrom+"' readonly></td>";
+      mark = mark + docfrom;
+      var docloc = "<td><input type='file' name='doc_file' multiple='' required></td></tr>";
+      mark = mark + docloc;
+      $(".upload tbody").append(mark);
+
+      document.getElementById('docname').value ='';
+      document.getElementById('docdate').value ='';
+      document.getElementById('docfrom').value ='';
+      $('.upload').show();
+    });
+
+    // Find and remove selected table rows
+    $("#delete-row-doc").click(function(){
+        $(".upload tbody").find('input[name="record"]').each(function(){
+          if($(this).is(":checked")){
+                $(this).parents("tr").remove();
+            }
+            //alert($('#upload').length);
+            if($('#upload tr').length == 1)
+              $('#upload').hide();
+        });
+    });
+});
+
+
+</script>
+
+<style>
+.subtitle
+{
+background-color:#F0E68C;
+}
+.spnhead{
+  font-size: 20px;
+  font-weight: bold;
+}
+.spndata{
+  font-size: 18px;
+  font-weight: bold;
+}
+</style>
+<div class="col-12">
+  <div id="content">
+    <div class="titlebox">Upload Documents Of Patient</div>
+
+    <div class="row" style="padding-bottom:2px;"></div>
+    {% for row in ds%}
+    <div class="col-12 subtitle">
+      <div class="col-2"><span class="spnhead">Regno:</span><span class="spndata">{{row[1]}}</span></div>
+      <div class="col-3"><span class="spnhead">Name:</span><span class="spndata">{{row[2]}} {{row[4]}} {{row[3]}}</span></div>
+      <div class="col-2"><span class="spnhead">Sex:</span><span class="spndata">{{row[13]}}</span></div>
+      <div class="col-2"><span class="spnhead">Age:</span><span class="spndata">{{row[11]}} {{row[12]}}</span></div>
+    </div>
+    {%endfor%}
+    <div class="row myrow">
+      <div class="col-3">
+        <div style="height:40%;width:80%;background-color:grey;padding:5px 5px;">UPDATE UPLOADED DOCUMENTS</div>
+      </div>
+    </div>
+    <div class="row" style="padding-bottom:2px;"></div>
+    <div class="col-12">
+        <table  id="mainTable">
+          <thead>
+            <th>Document Name *</th>
+            <th>Document Date *</th>
+            <th>Document Source *</th>
+            <th>Add</th>
+            <th>Remove</th>
+          </thead>
+
+          <tr>
+          <td><input type="text" id="docname" name ="doc_name" placeholder="Name of Report" ></td>
+          <td><input type="date" id="docdate" name ="doc_date"></td>
+          <td><input type="text" id="docfrom" name ="doc_from" placeholder="Report From" ></td>
+
+          <td><input type="button" class="add-row" id="add-row-doc" value="Add Row" ></td>
+          <td><input type="button" class="delete-row" id="delete-row-doc" value="Delete Row"></td>
+        </tr>
+        </table>
+        <p id="msg"></p>
+    </div>
+    <div class="row myrow"><h3>Added Documents</h3></div>
+
+    <form action="opdDocUpload" method="POST" enctype="multipart/form-data" >
+      {%for row in ds %}
+      <input type="text" name="regno" value="{{row[1]}}" style="display:none;">
+      {%endfor%}
+      <input type="date" id="upldate" name="entrydate" placeholder="Reason" style="display:none;">
+
+      <div class="col-12">
+        <table class="upload" id="mainTable"  style="display:block;">
+            <thead>
+              <th>Select</th>
+              <th>Document Name</th>
+              <th>Document Date</th>
+              <th>Document Source</th>
+              <th>Document</th>
+            </thead>
+
+            <tbody>
+            </tbody>
+        </table>
+     </div>
+      <div class="row myrow">
+        <div class="col-5"></div>
+        <div class="col-3">
+          <input type="submit" value="SAVE" style="height:40px;width:150px;">
+        </div>
+      </div>
+
+    </form>
+    <br>
+    <div class="row myrow">
+      <p>{{ack}}</p>
+    </div>
+  </div>
+</div> <!--- Content --->
+</div><!--- col-12 --->
+
+<br>
+
+
+
+{%endblock%}

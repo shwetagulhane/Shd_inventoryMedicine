@@ -1,0 +1,301 @@
+{% extends "medicine/frame.html" %}
+{% block content %}
+
+
+<script>
+function getDistName()
+{
+  var val = $("#dis_type").val();
+  $.ajax({
+  type: "POST",
+  url: "/getDistributorName",
+  data:"dist_type_id=" + val,
+  success: function(string){
+    var data = JSON.parse(string)['data'];
+	 $("#dis_id").html(htmlify(data));
+  }
+  });
+};
+function htmlify(val)
+{
+  var Data = "<option value=''>--Select--</option>";
+  for (var index = 0; index < val.length; ++index) {
+      var entry = val[index];
+    Data = Data + "<option value='"+entry[0]+"'>"+entry[1]+"</option>";
+    };
+    return Data;
+};
+	//$(function()
+  //{
+      //$( "#forname" ).autocomplete
+      //({
+          //source: function( request, response )
+          //{
+            //var forname=document.getElementById('forname').value;
+              //$.ajax
+              //({
+                  //type:"POST",
+                  //url: "getData",
+                  //data:'forname='+forname,
+                  //success: function( data )
+                  //{
+                    ////alert(data);
+
+
+                    ////alert(data['d'][2]);
+                    //response(data);
+                  //}
+              //});
+          //},
+      //});
+  //};
+
+
+    $(document).ready(function()
+		{
+        $(".add-row").click(function()
+				{
+            mark = "";
+
+            var drugnameid= document.getElementById('drugname').value;
+            var batchid = document.getElementById('batch').value;
+            var dateid = document.getElementById('date').value;
+            var hsncodeid = document.getElementById('hsncode').value;
+            var qtyid = document.getElementById('qty').value;
+            var rateid = document.getElementById('rate').value;
+            var  expiryid= document.getElementById('expiry_d').value;
+            var  mfgid= document.getElementById('mfg_d').value;
+            var  qtymgid= document.getElementById('qty_mg').value;
+            var  disid= document.getElementById('dis').value;
+            var freeid= document.getElementById('free').value;
+            var mrpid = document.getElementById('mrp').value;
+            var  packid= document.getElementById('pack').value;
+            var  taxamid= document.getElementById('tax_am').value;
+            var  cgstid= document.getElementById('cgst').value;
+            var  sgstid= document.getElementById('sgst').value;
+            var  netamtid= document.getElementById('net_amt').value;
+
+
+
+            var chk = "<tr><td><input type='checkbox' name='record'></td>";
+            mark = mark + chk
+
+
+            var drugname = "<td><input type='text'  name='drugname' value='"+drugnameid+"'></td>";
+            mark = mark + drugname;
+
+
+			var batch = "<td><input type='text' size='6' name='batch_no' value='"+batchid+"'></td>";
+			mark = mark + batch;
+
+            var date = "<td><input type='date'  name='date' value='"+dateid+"' ></td>";
+            mark = mark + date;
+
+			var hsncode = "<td><input type='text'  name='hsn_code' size='6' value='"+hsncodeid+"' ></td>";
+            mark = mark + hsncode;
+
+            var qty = "<td><input type='text' name='quantity'  size='6' value='"+qtyid+"' ></td>";
+            mark = mark + qty;
+
+            var rate = "<td><input type='text'  name='rate' size='6' value='"+rateid+"'></td>";
+            mark = mark + rate;
+
+            var expiry = "<td><input type='date'  name='expiry_date' value='"+expiryid+"'></td>";
+            mark = mark + expiry;
+
+            var mfg_d = "<td><input type='date'  name='manufacturing_date' value='"+mfgid+"' ></td>";
+            mark = mark + mfg_d;
+
+			var qty_mg = "<td><input type='text'  name='quantity_mg' size='12' value='"+qtymgid+"' ></td>";
+            mark = mark + qty_mg;
+
+            var dis = "<td><input type='text' name='discount' size='6' value='"+disid+"' ></td>";
+            mark = mark + dis;
+
+            var free = "<td><input type='text'  name='free_med' size='6' value='"+freeid+"'></td>";
+            mark = mark + free;
+
+            var mrp = "<td><input type='text'  name='mrp' size='6' value='"+mrpid+"'></td>";
+            mark = mark + mrp;
+
+            var pack = "<td><input type='text'  name='pack'  size='4' value='"+packid+"' ></td>";
+            mark = mark + pack;
+
+			var tax_am = "<td><input type='text'  name='taxable_amount'  size='6' value='"+taxamid+"' ></td>";
+            mark = mark + tax_am;
+
+            var cgst = "<td><input type='text' name='cgst' size='6' value='"+cgstid+"' ></td>";
+            mark = mark + cgst;
+
+            var sgst = "<td><input type='text'  name='sgst' size='6' value='"+sgstid+"'></td>";
+            mark = mark + sgst;
+
+            var net_amt = "<td><input type='text'  name='netamt' size='6' value='"+netamtid+"'></td></tr>";
+            mark = mark + net_amt;
+
+
+            $("#inventory tbody").append(mark);
+
+
+          //autoclear input after pressing add button
+
+
+             document.getElementById('drugname').value='';
+             document.getElementById('batch').value='';
+             document.getElementById('date').value='';
+             document.getElementById('hsncode').value='';
+             document.getElementById('qty').value='';
+             document.getElementById('rate').value='';
+             document.getElementById('expiry_d').value='';
+             document.getElementById('mfg_d').value='';
+             document.getElementById('qty_mg').value='';
+             document.getElementById('dis').value='';
+             document.getElementById('free').value='';
+             document.getElementById('mrp').value='';
+             document.getElementById('pack').value='';
+             document.getElementById('tax_am').value='';
+             document.getElementById('cgst').value='';
+             document.getElementById('sgst').value='';
+             document.getElementById('net_amt').value='';
+            });
+
+
+
+        // Find and remove selected table rows
+        $(".delete-row").click(function(){
+            $("#inventory tbody").find('input[name="record"]').each(function(){
+            	if($(this).is(":checked")){
+                    $(this).parents("tr").remove();
+                }
+            });
+
+        });
+    });
+</script>
+
+<div class="col12">
+  <div id="content">
+    <div class="titlebox">INVENTORY DETAILS</div>
+     <br>
+<form action ="new_inventory_Insert" method="POST">
+<body>
+	
+       <div class="col-3">
+        <span class="texttule">Distributor Type:</span>
+            <select name="dist_type_id" id="dis_type" onchange="getDistName()" >
+            <option value="">--Select--</option>
+            {%for row in disdata%}
+            <option value="{{row[0]}}">{{row[1]}}</option>
+            {%endfor%}
+          </select>
+        </div>
+        
+      <div class="row myrow">
+        <div class="col-3">
+        <span class="texttule">Distributor Name:</span>
+        <select name="dist_type_id" id="dis_id" >
+        <option value=''>--Select--</option>
+           </select>
+        </div>
+
+
+  		  <div style="width:100%;max-height:400px;line-height:1em;overflow:scroll;">
+			  <br>
+			  <br>
+<table border=1>
+        <thead >
+            <tr>
+
+                <th>Drug Name</th>
+                <th>Batch Number</th>
+                <th>Date</th>
+                <th>HSN Code</th>
+                <th>Quantity</th>
+                <th>Rate</th>
+                <th>Expiry Date</th>
+                <th>Manufacturing Date</th>
+                <th>Quantity(Ml/Mg)</th>
+                <th>Discount</th>
+                <th>Free Medicine</th>
+                <th>MRP</th>
+                <th>Pack</th>
+                <th>Taxable Amount</th>
+                <th>CGST</th>
+                <th>SGST</th>
+                <th>Net Amount</th>
+                <th>+</th>
+                <th>-</th>
+            </tr>
+        </thead>
+        <tbody>
+    <div class="ui-widget">
+		<td><input type="text" id="drugname"  name= "drugname"></td>
+    </div>
+<!--
+    <input id="distdet_id " name="dist_detail" type="hidden" value="xm234jq">
+    <input id="med_id" name="gen_name" type="hidden" value="xm234jq">
+		<td><input type="text" id="batch"  name= "batch"  size="6"></td>
+-->
+		<td><input type="date" id="date"  name= "date" ></td>
+		<td><input type="text" id="hsncode"  name= "hsncode" size="7" ></td>
+		<td><input type="text" id="qty"  name= "quantity"  size="7"></td>
+		<td><input type="text" id="rate"  name= "rate"  size="7"></td>
+		<td><input type="date" id="expiry_d"  name= "expirydate" ></td>
+		<td><input type="date" id="mfg_d"  name= "mfg_date" ></td>
+		<td><input type="text" id="qty_mg"  name= "qty_mg" size="12"></td>
+		<td><input type="text" id="dis"  name= "discount" size="6" ></td>
+		<td><input type="text" id="free"  name= "free_med" size="6"></td>
+		<td><input type="text" id="mrp"  name= "mrp" size="5"></td>
+		<td><input type="text" id="pack"  name= "pack" size="5"></td>
+		<td><input type="text" id="tax_am"  name= "taxable_amt"size="7" ></td>
+		<td><input type="text" id="cgst"  name= "cgst" size="7"></td>
+		<td><input type="text" id="sgst"  name= "sgst" size="7"></td>
+		<td><input type="text" id="net_amt"  name= "netamt" size="5"></td>
+		<td><input type="button" class="add-row" value="Add Details"></td>
+        <td><input type="button" class="delete-row" value="Delete"></td>
+
+        </tbody>
+    </table>
+
+<br>
+<br>
+<table border=1 id="inventory">
+        <thead>
+            <tr>
+				<th>Select</th>
+                <th>Drug Name</th>
+                <th>Batch Number </th>
+                <th>Date</th>
+                <th>HSN Code</th>
+                <th>Quantity</th>
+                <th>Rate</th>
+                <th>Expiry Date</th>
+                <th>Manufacturing Date</th>
+                <th>Quantity(Ml/Mg)</th>
+                <th>Discount</th>
+                <th>Free Medicine</th>
+                <th>MRP</th>
+                <th>Pack</th>
+                <th>Taxable Amount</th>
+                <th>CGST</th>
+                <th>SGST</th>
+                <th>Net Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+  </form>
+        <br>
+        <br>
+        <div class="row myrow">
+        <div class="col-5"></div>
+        <div class="col-3">
+          <input type="submit" class="button" id='btnsave' value="UPDATE" style="height:30px;width:110px;">
+          </div> </div>
+        <br><br></div>
+      </div>
+<div class="col=5"><p><b> {{ack}}</b></p></div>
+        </div>
+</body>
+{% endblock %}

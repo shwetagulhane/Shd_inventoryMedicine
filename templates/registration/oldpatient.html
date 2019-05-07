@@ -1,0 +1,127 @@
+{% extends "Frame/framepage.html" %}
+{% block content %}
+
+<style>
+/* GENERAL CODE */
+#mainTable {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#mainTable td, #mainTable th {
+  padding: 8px;
+}
+
+#mainTable td{
+  padding: 8px;
+  font-size: 15px;
+}
+#mainTable tr:nth-child(even){background-color: #f2f2f2;}
+
+#mainTable tr:hover {background-color: #ddd;}
+
+#mainTable thead,th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  color: white;
+  font-size: 17px;
+}
+
+/* GENERAL CODE */
+
+
+/* SEPERATE CODE */
+#mainTable thead,th {
+  background-color:#778899;
+}
+/* SEPERATE CODE */
+
+</style>
+
+
+<div class="col12">
+  <div id="content">
+    <div class="titlebox">Old Patient Visit</div>
+    <br>
+
+    <form action="oldpatientregno" method="POST">
+    <div class="row myrow">
+        <div class="col-3">
+            <span class="texttule">RegNo:</span>
+            <input type="text" name="regno" style="width:120px;" required>
+            <input type="submit" value="Search">
+        </div>
+      </form>
+      <form action="oldpatientfname" method="POST">
+      <div class="col-3">
+          <span class="texttule">First Name:</span>
+          <input type="text" name="pfname" style="width:120px;" required>
+          <input type="submit" value="Search">
+      </div>
+    </form>
+    <form action="oldpatientcontact" method="POST">
+      <div class="col-3">
+          <span class="texttule">Contact No:</span>
+          <input type="text" name="contactno" style="width:120px;">
+          <input type="submit" value="Search">
+      </div>
+    </div>
+    <br>
+  </form>
+  <form action="oldpatientaadhar" method="POST">
+    <div class="row myrow">
+      <div class="col-3">
+          <span class="texttule">Aadhar Card:</span>
+          <input type="text" name="aadharNo" style="width:120px;">
+          <input type="submit" value="Search">
+      </div>
+    </form>
+    <form action="oldpatientaddress" method="POST">
+      <div class="col-3">
+          <span class="texttule">Address:</span>
+          <input type="text" name="address" style="width:120px;">
+          <input type="submit" value="Search">
+      </div>
+    </form>
+    <br>
+  </div>
+  </div> <!--- Content --->
+</div><!--- col-12 --->
+<br>
+
+    <table  id="mainTable">
+    <thead>
+      <th>Action</th>
+      <th>Regno</th>
+      <th>Patient Name</th>
+      <th>Relative Name</th>
+      <th>Sex</th>
+      <th>Age</th>
+      <th>Village</th>
+      <th>Address</th>
+      <th>Contact No</th>
+      <th>Aadhar No</th>
+  </thead>
+  {%for row in ds%}
+  <tr>
+    <form action="opdVisit_redir" method="POST">
+      <td><input type="submit" value="Start Visit" ></td>
+      <input type="text" name="regno" value="{{row[1]}}" style="display:none;">
+  </form>
+    <td>{{row[1]}}</td>
+    <td>{{row[2]}} {{row[4]}} {{row[3]}}</td>
+    <td><b>{{row[5]}}</b>:-{{row[6]}} {{row[8]}} {{row[7]}}</td>
+    <td>{{row[13]}}</td>
+    <td>{{row[14]}} {{row[15]}}</td>
+    <td>{{row[20]}}</td>
+    <td>{{row[21]}}</td>
+    <td>{{row[16]}}</td>
+    <td>{{row[23]}}</td>
+  </tr>
+  {%endfor%}
+
+  </table>
+
+{% endblock %}

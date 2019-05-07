@@ -1,0 +1,227 @@
+{% extends "Frame/framepage.html" %}
+{% block content %}
+
+<script>
+function display_c(){
+var refresh=1000; // Refresh rate in milli seconds
+mytime=setTimeout('display_ct()',refresh)
+}
+
+function display_ct(){
+var today = new Date();
+var h = today.getHours();
+var m = today.getMinutes();
+var s = today.getSeconds();
+var dd = today.getDate();
+var mm = today.getUTCMonth()+1;
+var yy = today.getFullYear();
+m = checkTime(m);
+s = checkTime(s);
+
+dd = checkTime(dd);
+mm = checkTime(mm);
+
+
+document.getElementById('regtime').value = h + ":" + m;
+document.getElementById('regdate').value = yy + "-" + mm + "-" + dd;
+tt=display_c();
+}
+
+
+
+setInterval(function() {
+  $.ajax({
+  type: "POST",
+  url: "/AJXgetRegno",
+  success: function(string){
+    $("#regno").val(JSON.parse(string)['regno']);
+  }
+  });
+}, 1000 * 1);
+
+function showComapny()
+{
+  var pclass = document.getElementById('pclass').value;
+  if(pclass=='Company')
+  {
+    document.getElementById('companydiv').style.display = 'block';
+    document.getElementById('companyname').required = true;
+  }
+  else
+  {
+    document.getElementById('companydiv').style.display = 'none';
+    document.getElementById('companyname').required = false;
+  }
+}
+function matchname()
+{
+  var rtype = document.getElementById('rtype').value;
+  if(rtype =='Neighbour'  || rtype =='Other')
+    document.getElementById('rlname').value =  '';
+  else
+    document.getElementById('rlname').value =  document.getElementById('plname').value;
+}
+
+</script>
+
+<div class="col12">
+  <div id="content">
+    <div class="titlebox">Patient Registration</div>
+     <br>
+     <form action="Insertnewpatient" method="POST">
+     <div style="display:block;">
+       <input type="text" name="regno" id="regno" value="{{regno}}">
+       <input type="date" id="regdate"   name="regdate">
+       <input type="time" id="regtime"  name="regtime">
+     </div>
+      <div class="row myrow">
+        <div class="col-6">
+        <span class="texttule">Patient Name:</span>
+        <input type="text" name="pfname" id="pfname" placeholder="First Name" required>
+        <input type="text" name="pmname" id="pmname" placeholder="Middle Name">
+        <input type="text" name="psname" id="plname" placeholder="Last Name" required>
+      </div>
+
+        <div class="col-3">
+          <span class="texttule">Sex:</span>
+          <select name="sex" id='sex' required>
+            <option value="">--Select--</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Transgender">Transgender</option>
+          </select>
+        </div>
+
+        <div class="col-2">
+          <span class="texttule">Age:</span>
+          <input type="text" name="age" id='age' style="max-width:70px;" required>
+
+          <select name="agetype" id="agetype">
+            <option value="Year">Year</option>
+            <option value="Month">Month</option>
+            <option value="Day">Day</option>
+          </select>
+        </div>
+      </div>
+      <br>
+      <div class="row myrow">
+        <div class="col-2">
+          <span class="texttule">Relative Type:</span>
+          <select name="rtype" id="rtype" onchange="matchname()" required>
+            <option value="">--Select--</option>
+            <option value="Father">Father</option>
+            <option value="Mother">Mother</option>
+            <option value="Brother">Brother</option>
+            <option value="Sister">Sister</option>
+            <option value="Husband">Husband</option>
+            <option value="Wife">Wife</option>
+            <option value="Neighbour">Neighbour</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+        <div class="row myrow">
+          <div class="col-6">
+            <span class="texttule">Relative Name:</span>
+            <input type="text" name="rfname" id="rfname" placeholder="First Name" required>
+            <input type="text" name="rmname" id="rmname" placeholder="Middle Name">
+            <input type="text" name="rsname" id="rlname" placeholder="Last Name" required>
+          </div>
+          <div class="col-3">
+            <span class="texttule">Occupation:</span>
+            <input type="text" name="occupation" id='occupation' placeholder="Occupation" required>
+          </div>
+          <div class="col-3">
+            <span class="texttule">Education:</span>
+            <input type="text" name="education" id='education' placeholder="Education" required>
+          </div>
+      </div>
+      <br>
+
+      <div class="row myrow">
+        <div class="col-3">
+          <span class="texttule">Contact:</span>
+          <input type="text" name="contactno" id='contactno' placeholder="Contact Number" required>
+        </div>
+        <div class="col-3">
+          <span class="texttule">Village:</span>
+          <input type="text" name="village"id='village' placeholder="Village">
+        </div>
+        <div class="col-3">
+          <span class="texttule">Tahsil:</span>
+          <input type="text" name="tahsil" id='tahsil' placeholder="Tahsil">
+        </div>
+        <div class="col-3">
+          <span class="texttule">District:</span>
+          <select name="district" id='district'>
+            <option value="">--Select--</option>
+            {%for dsname in disname%}
+              <option value="{{dsname[0]}}">{{dsname[1]}}</option>
+            {%endfor%}
+          </select>
+        </div>
+      </div>
+      <br>
+      <div class="row myrow">
+        <div class="col-3">
+          <span class="texttule">Address:</span>
+          <input type="text" name="address" id='address' placeholder="Address" required>
+        </div>
+        <div class="col-3">
+          <span class="texttule">Aadhar No:</span>
+          <input type="text" name="aadharNo" id='aadharNo' placeholder="aadharNo">
+        </div>
+        <div class="col-3">
+          <span class="texttule">Cast:</span>
+          <select name="cast" id='cast' required>
+            <option value="">--Select--</option>
+            <option value="test1">Test1</option>
+            <option value="test2">Test2</option>
+          </select>
+        </div>
+        <div class="col-3">
+          <span class="texttule">Ration Card:</span>
+          <select name="rationcard" id='rationcard'  required>
+            <option value="">--Select--</option>
+            <option value="test2">Test2</option>
+          </select>
+        </div>
+      </div>
+      <br>
+        <div class="row myrow">
+        <div class="col-3">
+          <span class="texttule">Patient Category:</span>
+          <select name="pclass" id="pclass" onchange="showComapny()" required>
+            <option value="">--Select--</option>
+            <option value="General">General</option>
+            <option value="Staff">Staff</option>
+            <option value="CMSS">CMSS</option>
+            <option value="Company">Company</option>
+          </select>
+        </div>
+        <div class="col-3" id="companydiv" style="display:none;">
+          <span class="texttule">Company Name:</span>
+          <input type="text" name="cname" id='cname' placeholder="Comapany Name">
+        </div>
+      </div>
+      <br>
+      <div class="row myrow">
+        <div class="col-5"></div>
+        <div class="col-3">
+          <input type="submit" class="button" id='btnsave' value="SAVE" style="height:40px;width:150px;">
+        </div>
+      </div>
+      <br>
+      <div class="row myrow"><div class="col-3"><p>{{ack}}</p></div></div>
+    </form>
+  </div> <!--- Content --->
+</div><!--- col-12 --->
+
+
+
+
+
+
+
+
+{% endblock %}

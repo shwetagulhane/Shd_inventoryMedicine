@@ -1,0 +1,153 @@
+{% extends "Frame/inventoryFrame.html" %}
+{% block content %}
+
+<style>
+<!--
+.subtitle
+{
+background-color:#F0E68C;
+width: 100%;
+}
+.spnhead{
+  font-size: 20px;
+  font-weight: bold;
+}
+.spndata{
+  font-size: 18px;
+  font-weight: bold;
+}
+-->
+
+
+		.container{
+			width: 100%;
+      padding-right: 0px;
+      padding-left: 0px;
+      margin-right: auto;
+      margin-left: auto;
+		}
+
+
+
+		ul.tabs{
+			margin: 0px;
+			padding: 0px;
+			list-style: none;
+		}
+		ul.tabs li{
+			background: none;
+			display: inline-block;
+			padding: 8px 15px;
+      padding-right:100px;
+      cursor: pointer;
+      color: #222;
+      font-size: 18px;
+		}
+
+		ul.tabs li.current{
+			background: #F0FFFF;
+			color: #222;
+      font-weight: bold;
+		}
+
+		.tab-content{
+			display: none;
+			background: #F0FFFF;
+			padding: 15px;
+		}
+
+		.tab-content.current{
+			display: inherit;
+		}
+</style>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Shaheed Hospital</title>
+    <meta name ="viewport" content="width=device-width,initial-scale=1" >
+    <link rel="stylesheet" type="text/css" href="static/css/mycss.css">
+    <link rel="stylesheet" type="text/css" href="static/css/homework.css?q=1989556">
+    <link rel="stylesheet" type="text/css" href="static/css/homework.css">
+
+
+<script type="text/javascript">
+	function display_c(){
+var refresh=1000; // Refresh rate in milli seconds
+mytime=setTimeout('display_ct()',refresh)
+}
+function display_ct(){
+
+var today = new Date();
+var h = today.getHours();
+var m = today.getMinutes();
+var s = today.getSeconds();
+var dd = today.getDate();
+var mm = today.getUTCMonth()+1;
+var yy = today.getFullYear();
+m = checkTime(m);
+s = checkTime(s);
+
+dd = checkTime(dd);
+mm = checkTime(mm);
+
+
+document.getElementById('time').value = h + ":" + m + ":" + s;
+document.getElementById('date').value = dd + "/" + mm + "/" + yy;
+
+document.getElementById('atime').value = h + ":" + m;
+document.getElementById('adate').value = yy + "-" + mm + "-" + dd;
+tt=display_c();
+}
+function checkTime(i){
+    if(i<10){i = "0" + i};
+    return i;
+}
+
+
+$(document).ready(function(){
+	$('ul.tabs li').click(function(){
+		var tab_id = $(this).attr('data-tab');
+
+		$('ul.tabs li').removeClass('current');
+		$('.tab-content').removeClass('current');
+
+		$(this).addClass('current');
+		$("#"+tab_id).addClass('current');
+	})
+
+})
+
+</script>
+<!--
+<div class="header" style="background-color: ">
+    <div class="section-inner">
+        <div class="row center" >
+            <div class="col-2">
+            <div id="txt"></div>
+            <p style="margin-top: 25px;">Date: <input type="text" id="date" value= "" disabled="true" size="8" /></p>
+            </div>
+            <div class="col-7">
+            <h2 class="title"><b>Shaheed Hospital</b></h2>
+             <p style="text-align: center;"><b>Dalli Rajhara Dist. Balod (Chhattisgarh)</b></p>
+             </div>
+             <div class="col-2 ">
+             <p style="margin-top: 25px; text-align: right;">Time: <input type="text" id="time" disabled="true" size="6" /></p>
+             </div>
+             <div class="col-1">
+             <a href="{{url_for('logout')}}">Logout</a>
+             </div>
+         </div>
+    </div>
+-->
+    <!-- /section-inner -->
+<!--
+</div>
+-->
+<!--/header-->
+
+
+
+    	</div>
+
+
+{% endblock %}

@@ -1,0 +1,274 @@
+{% extends "Frame/framepage.html" %}
+{% block content %}
+<style>
+#mainTable {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#mainTable td, #mainTable th {
+  padding: 8px;
+}
+
+#mainTable td{
+  padding: 8px;
+  font-size: 15px;
+}
+#mainTable tr:nth-child(even){background-color: #f2f2f2;}
+
+#mainTable tr:hover {background-color: #ddd;}
+
+#mainTable thead,th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  color: white;
+  font-size: 17px;
+}
+
+/* GENERAL CODE */
+
+
+/* SEPERATE CODE */
+#mainTable thead,th {
+  background-color:#778899;
+}
+/* SEPERATE CODE */
+
+
+
+#inventory {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#inventory td, #inventory th {
+  padding: 8px;
+}
+
+#inventory td{
+  padding: 8px;
+  font-size: 15px;
+}
+#inventory tr:nth-child(even){background-color: #f2f2f2;}
+
+#inventory tr:hover {background-color: #ddd;}
+
+#inventory thead,th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  color: white;
+  font-size: 17px;
+}
+
+/* GENERAL CODE */
+
+
+/* SEPERATE CODE */
+#inventory thead,th {
+  background-color:#778899;
+}
+/* SEPERATE CODE */
+
+
+
+
+.subtitle
+{
+background-color:#F0E68C;
+}
+.spnhead{
+  font-size: 20px;
+  font-weight: bold;
+}
+.spndata{
+  font-size: 18px;
+  font-weight: bold;
+}
+</style>
+
+<script src="jquery-1.12.4.min.js"></script>
+<script type="text/javascript">
+	// ARRAY FOR HEADER.
+    var arrHead = new Array();
+    arrHead = ['', 'drugname', 'medtype', 'batchno','expiry','onhand','issuedqty','remqty'];      // SIMPLY ADD OR REMOVE VALUES IN THE ARRAY FOR TABLE HEADERS.
+
+    // FIRST CREATE A TABLE STRUCTURE BY ADDING A FEW HEADERS AND
+    // ADD THE TABLE TO YOUR WEB PAGE.
+    function createTable() {
+        var empTable = document.createElement('table');
+        empTable.setAttribute('id', 'empTable');            // SET THE TABLE ID.
+
+        var tr = empTable.insertRow(-1);
+
+        for (var h = 0; h < arrHead.length; h++) {
+            var th = document.createElement('th');          // TABLE HEADER.
+            th.innerHTML = arrHead[h];
+            tr.appendChild(th);
+        }
+
+        var div = document.getElementById('cont');
+        div.appendChild(empTable);    // ADD THE TABLE TO YOUR WEB PAGE.
+    }
+
+    
+	function addRow() {
+        var Table = document.getElementById('outward');
+
+        var rowCnt = Table.rows.length;        // GET TABLE ROW COUNT.
+        var tr = Table.insertRow(rowCnt);      // TABLE ROW.
+        tr = Table.insertRow(rowCnt);
+
+        for (var c = 0; c < arrHead.length; c++) {
+            var td = document.createElement('td');          // TABLE DEFINITION.
+            td = tr.insertCell(c);
+
+            if (c == 0) {           // FIRST COLUMN.
+                // ADD A BUTTON.
+                var button = document.createElement('input');
+
+                // SET INPUT ATTRIBUTE.
+                button.setAttribute('type', 'button');
+                button.setAttribute('value', 'Remove');
+
+                // ADD THE BUTTON's 'onclick' EVENT.
+                button.setAttribute('onclick', 'removeRow(this)');
+
+                td.appendChild(button);
+            }
+            else {
+                // CREATE AND ADD TEXTBOX IN EACH CELL.
+                var ele = document.createElement('input');
+                ele.setAttribute('type', 'text');
+                ele.setAttribute('value', '');
+
+                td.appendChild(ele);
+            }
+        }
+    }
+
+    // DELETE TABLE ROW.
+    function removeRow(oButton) {
+        var empTab = document.getElementById('outward');
+        empTab.deleteRow(oButton.parentNode.parentNode.rowIndex);       // BUTTON -> TD -> TR.
+    }
+
+    
+
+	//$(function()
+  //{
+      //$( "#forname" ).autocomplete
+      //({
+          //source: function( request, response )
+          //{
+            //var forname=document.getElementById('forname').value;
+              //$.ajax
+              //({
+                  //type:"POST",
+                  //url: "getData",
+                  //data:'forname='+forname,
+                  //success: function( data )
+                  //{
+                    ////alert(data);
+
+
+                    ////alert(data['d'][2]);
+                    //response(data);
+                  //}
+              //});
+          //},
+      //});
+  //};
+
+
+    
+
+    </script>
+
+<div class="col12">
+  
+    <div class="titlebox">OUTWARD DETAILS</div>
+     <br>
+<form>
+<body> 
+  <div class="col-3">
+   <span class="texttule">Issued To:</span>
+    <select name="" id="" onchange="" required>
+     <option value="">--Select--</option>
+     <option value="">Child Ward</option>
+     <option value="">Male Ward</option>
+     <option value="">Delivery Ward</option>
+     <option value="">Female Ward</option>
+     <option value="">Surgical Ward</option>
+     <option value="">K Ward</option>
+     <option value="">Nursery Ward</option>
+     <option value="">Pharmacy</option>
+   </select>
+   </div>
+<div class="row myrow">
+<div class="col-3">
+<span class="texttule">Issued Date:</span>
+<input type="date" name="" id=""  required>
+</div>
+
+  <div class="col-3">
+   <span class="texttule">Person Name:</span>
+   <input type="text" name="" id="" placeholder="Person Name" required>
+ </div>
+ <div class="col-3">
+   <span class="texttule">Time:</span>
+   <input type="time" name="" id="" required>
+ </div>
+ 
+<br>
+</div>
+<div class="ui-widget">
+	<div class="row myrow">
+      <div class="col-3">
+       <span class="texttule">Drug Name:</span>
+       <input type="text" name="address" id="ss" placeholder="Drug Name" required>
+       </div>
+
+         <div class="col-1">
+          <input type="submit" class="button" id='' onclick="addRow()" value="Add" style="height:26px;width:100px;">
+         </div>
+<!--
+        <div class="col-1">
+          <input type="submit" class="button" id=''  onclick="removeRow(this)" value="Delete" style="height:26px;width:100px;">
+        </div>
+-->
+       </div>
+       </div><br>
+  		  <div style="width:100%;max-height:400px;line-height:1em;overflow:scroll;">
+			  <br>
+			  <br>
+<br>
+<br>
+<table border=1 id="outward">
+        <thead>
+            <tr>
+				<th></th>
+                <th>Drug Name</th>
+                <th>Medicine Type </th>
+                <th>Batch Number</th>
+                <th>Expiry Date</th>
+                <th>On Hand</th>
+                <th>Issued Quantity</th>
+                <th>Remaining Quantity</th>
+
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+  </form>
+
+        </div>
+      </div>
+
+
+</body>
+{% endblock %}

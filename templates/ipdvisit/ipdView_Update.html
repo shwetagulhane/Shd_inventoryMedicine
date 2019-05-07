@@ -1,0 +1,183 @@
+{% extends "Frame/framepage.html" %}
+{% block content %}
+
+<style>
+.subtitle
+{
+background-color:#F0E68C;
+}
+.spnhead{
+  font-size: 20px;
+  font-weight: bold;
+}
+.spndata{
+  font-size: 18px;
+  font-weight: bold;
+}
+</style>
+<script>
+function chooseScheme()
+{
+  if(document.getElementById('gscheme').value == 'eligible'){
+    document.getElementById('schemename').style.display='block';
+    document.getElementById('schemename').required=true;
+  }
+  else{
+    document.getElementById('schemename').style.display='none';
+    document.getElementById('schemename').required=false;
+  }
+}
+
+function choosePfrom()
+{
+  if(document.getElementById('pfrom').value == 'Referred'){
+    document.getElementById('referred_details').style.display='block';
+    document.getElementById('hname').required=true;
+    document.getElementById('dname').required=true;
+  }
+  else{
+    document.getElementById('referred_details').style.display='none';
+    document.getElementById('hname').required=false;
+    document.getElementById('dname').required=false;
+  }
+}
+</script>
+
+<div class="col12">
+  <div id="content">
+    <div class="titlebox">Update Additional Information </div>
+    <div class="row" style="padding-bottom:2px;"></div>
+        {% for row in data1%}
+        <div class="row myrow subtitle">
+          <div class="col-2"><span class="spnhead">Regno:</span><span class="spndata">{{row[1]}}</span></div>
+          <div class="col-3"><span class="spnhead">Name:</span><span class="spndata">{{row[2]}} {{row[4]}} {{row[3]}}</span></div>
+          <div class="col-2"><span class="spnhead">Sex:</span><span class="spndata">{{row[13]}}</span></div>
+          <div class="col-2"><span class="spnhead">Age:</span><span class="spndata">{{row[11]}} {{row[12]}}</span></div>
+        </div>
+        {%endfor%}
+    <br>
+    {% for row in data2%}
+    <form action="IpdViewUpdate" method="POST">
+      <div style="display:none;">
+        <input type="text" name="ipdid" value="{{row[0]}}">
+        <input type="text" name="regno" value="{{row[1]}}">
+      </div>
+    <div class="row myrow">
+        <div class="col-2"><input type="date"  name="ipddate" value="{{row[4]}}"></div>
+        <div class="col-2"><input type="time"  name="ipdtime" value="{{row[15]}}"></div>
+      <div class="col-3"><span class="texttule">Complaint:</span>
+        <input type="text" name="complaint" value="{{row[2]}}"></div>
+
+      <div class="col-2"><span class="texttule">Ward:</span>
+        <select name="wardid">
+          <option style="font-weight:bold;" value="{{row[17]}}">{{row[17]}}</option>
+          <option value="">--Select--</option>
+          {%for wname in wname%}
+            <option value="{{wname[0]}}">{{wname[1]}}</option>
+          {%endfor%}
+        </select>
+      </div>
+      <div class="col-1"><span class="texttule">URN NO:</span></div>
+      <div class="col-2"><input type="text" name="urnno" value="{{row[8]}}"></div>
+    </div>
+    <br>
+    <div class="row myrow">
+      <p style="padding-left:5px;font-size:20px;font-weight:bold;color:#008080;"><u>Government Scheme</u></p>
+      <div class="col-1"><span class="texttule">Gov.Scheme:</span></div>
+      <div class="col-1">
+        <select name="gscheme" id="gscheme" onchange="chooseScheme()">
+          {%if row[7] != "Not Eligible"%}
+            <option style="font-weight:bold;" value="eligible">Eligible</option>
+          {%else%}
+            <option style="font-weight:bold;" value="{{row[7]}}">{{row[7]}}</option>
+          {%endif%}
+          <option value="">--Select--</option>
+          <option value="Not Eligible">Not Eligible</option>
+          <option value="eligible">Eligible</option>
+        </select>
+      </div>
+
+      {%if row[7] != "Not Eligible"%}
+      <div class="col-1" id="schemename">
+        <select name="govscheme" id="schemename" >
+          <option style="font-weight:bold;" value="{{row[7]}}">{{row[7]}}</option>
+          <option value="">--Select--</option>
+          <option value="AB">Ayushman Bharat</option>
+        </select>
+      </div>
+      {%endif%}
+      <div class="col-1" id="schemename" style="display:none;">
+        <select name="govscheme" id="schemename" >
+          <option value="">--Select--</option>
+          <option value="AB">Ayushman Bharat</option>
+        </select>
+      </div>
+    </div>
+    <br>
+    <div class="row myrow">
+      <p style="padding-left:5px;font-size:20px;font-weight:bold;color:#008080;"><u>Patient Coming From</u></p>
+      <div class="col-1"><span class="texttule">Patient From:</span></div>
+      <div class="col-2">
+        <select name="patientfrom" id="pfrom">
+          <option style="font-weight:bold;" value="{{row[3]}}">{{row[3]}}</option>
+          <option value="">--Select--</option>
+          <option value="OUTPATIENT">OUTPATIENT</option>
+          <option value="EMERGENCY">EMERGENCY</option>
+          <option value="REFFERED By Other Hospital">REFFERED By Other Hospital</option>
+        </select>
+      </div>
+      <!---
+      <div id="referred_details" style="display:none;">
+        <div class="col-1"><span class="texttule">Hospital:</span></div>
+        <div class="col-2"><input type="text" name="refhospital" id="hname"></div>
+
+        <div class="col-1"><span class="texttule">Doctor Name:</span></div>
+        <div class="col-2"><input type="text" name="refdocname" id="dname"></div>
+      </div>
+    </div> --->
+    <br>
+    <div class="row myrow">
+      <p style="padding-left:5px;font-size:20px;font-weight:bold;color:#008080;"><u>Advance Money</u></p>
+      <div class="col-3"><span class="texttule">Amount:</span>
+        <input type="text" name="advmoney" value="{{row[9]}}"></div>
+        <div class="col-3"><span class="texttule">Received By:</span>
+          <input type="text" name="moneyreceivedby" value="{{row[10]}}"></div>
+    </div>
+    <br>
+    <div class="row myrow">
+      <div class="col-5"></div>
+      <div class="col-3">
+        <input type="submit" value="Save"  style="height:40px;width:150px;">
+      </div>
+    </div>
+  </form>
+    {%endfor%}
+    <br>
+{%if ack%}
+    <div class="row myrow">
+      <div class="col-5"></div>
+        <div class="col-3"><p>{{ack}}</p></div>
+    </div>
+    <div class="row myrow">
+        <form action="getIpdViewUpdate" method='POST'>
+          <div style="display:none;">
+            <input type="text" name="regno" value="{{regno}}">
+          </div>
+            <div class="col-5"></div>
+            <div class="col-3">
+              <input type="submit" value="Go Back"  style="height:40px;width:150px;">
+          </div>
+        </form>
+{%endif%}
+      <br>
+  </div> <!--- Content --->
+</div><!--- col-12 --->
+
+
+
+
+
+
+
+
+{% endblock %}

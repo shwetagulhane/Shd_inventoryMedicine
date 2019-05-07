@@ -1,0 +1,82 @@
+{% extends "medicine/frame.html" %}
+{% block content %}
+<div class="col12">
+  <div id="content">
+    <div class="titlebox">DISTRIBUTOR DETAILS</div>
+     <br>
+
+     <form action="new_distributor_Insert" method="POST">
+
+         <div class="col-3">
+          <span class="texttule">Distributor Type:</span>
+           <select name="dist_type_id" id="" >
+            <option value="">--Select--</option>
+            {%for row in disdata%}
+            <option value="{{row[0]}}">{{row[1]}}</option>
+            {%endfor%}       
+          </select>
+          </div>
+     <div class="row myrow">
+      <div class="col-3">
+       <span class="texttule">Distributor Name:</span>
+       <input type="text" name="distributor_name" id="" placeholder="Distributor Name" required>
+       </div>
+
+         <div class="col-3">
+          <span class="texttule">Address:</span>
+          <input type="text" name="address" id="" placeholder="Address" required>
+        </div>
+        <div class="col-3">
+          <span class="texttule">Contact:</span>
+          <input type="text" name="contact_no" id="" placeholder="Contact number">
+        </div>
+        </div>
+        
+      <br>
+      <div class="row myrow">
+        <div class="col-3">
+        <span class="texttule">Invoice Number:</span>
+        <input type="text" name="invoice_no" id="" size="8" placeholder="Invoice Number" required>
+        </div>
+
+         <div class="col-3">
+          <span class="texttule">Drug License:</span>
+          <input type="text" name="drug_license" id="" size="8" placeholder="Drug License" required>
+        </div>
+        <div class="col-3">
+          <span class="texttule">GST Number:</span>
+          <input type="text" name="gst_no" id=""  size="8" placeholder="GST Number">
+        </div>
+        <div class="col-3">
+          <span class="texttule">Aadhar Number:</span>
+          <input type="text" name="aadhar_no" id="" size="12" placeholder="Aadhar Number">
+        </div>
+        </div>
+
+        <br>
+        <div class="row myrow">
+        <div class="col-3">
+          <span class="texttule">PAN card Number:</span>
+          <input type="text" name="pancard_no" id="" size="12" placeholder="PAN card number">
+        </div>
+        <div class="col-3">
+          <span class="texttule">Email Id:</span>
+          <input type="text" name="emailid" id="" placeholder="Email id">
+        </div>
+
+        </div>
+        <br>
+        <br>
+        <div class="row myrow">
+        <div class="col-5"></div>
+        <div class="col-3">
+          <input type="submit" class="button" id='btnsave' value="SAVE" style="height:30px;width:110px;">
+          </div> </div>
+        <br><br>
+        </form>
+        <div class="col=5"><p><b> {{ack}}</b></p></div>
+      </div>
+
+
+
+{% endblock %}

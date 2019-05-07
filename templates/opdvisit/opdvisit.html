@@ -1,0 +1,138 @@
+{% extends "Frame/framepage.html" %}
+{% block content %}
+
+<script>
+function display_c(){
+var refresh=1000; // Refresh rate in milli seconds
+mytime=setTimeout('display_ct()',refresh)
+}
+
+function display_ct(){
+
+var today = new Date();
+var h = today.getHours();
+var m = today.getMinutes();
+var s = today.getSeconds();
+var dd = today.getDate();
+var mm = today.getUTCMonth()+1;
+var yy = today.getFullYear();
+m = checkTime(m);
+s = checkTime(s);
+
+dd = checkTime(dd);
+mm = checkTime(mm);
+
+
+document.getElementById('visittime').value = h + ":" + m;
+document.getElementById('visitdate').value = yy + "-" + mm + "-" + dd;
+tt=display_c();
+}
+</script>
+
+<style>
+.subtitle
+{
+background-color:#F0E68C;
+}
+.spnhead{
+  font-size: 20px;
+  font-weight: bold;
+}
+.spndata{
+  font-size: 18px;
+  font-weight: bold;
+}
+</style>
+
+<div class="col12">
+  <div id="content">
+    <div class="titlebox">Patient Vitals</div>
+    <div class="row" style="padding-bottom:2px;"></div>
+    {% for row in data%}
+    <div class="col-12 subtitle">
+      <div class="col-2"><span class="spnhead">Regno:</span><span class="spndata">{{row[1]}}</span></div>
+      <div class="col-3"><span class="spnhead">Name:</span><span class="spndata">{{row[2]}} {{row[3]}} {{row[4]}}</span></div>
+      <div class="col-2"><span class="spnhead">Sex:</span><span class="spndata">{{row[13]}}</span></div>
+      <div class="col-2"><span class="spnhead">Age:</span><span class="spndata">{{row[11]}} {{row[12]}}</span></div>
+    </div>
+    <br>
+    <form action="opdVisit" method="POST">
+    <div class="row myrow">
+      <div class="col-1"><span class="texttule">Complaint:</span></div>
+      <div class="col-2"><input type="text" name="complaint" required></div>
+
+      <div class="col-2"><span class="texttule">Blood Pressure:</span></div>
+      <div class="col-2"><span class="texttule">Systolic:</span><input type="text" name="systolic" style="width:60px;"></div>
+      <div class="col-2"><span class="texttule">Diastolic:</span><input type="text" name="diastolic" style="width:60px;"></div>
+    </div>
+    <br>
+    <div class="row myrow">
+      <div class="col-1"><span class="texttule">Height:</span></div>
+      <div class="col-2"><input type="text" name="height" id="height" onblur="calcBmi()"></div>
+
+      <div class="col-1"><span class="texttule">Weight:</span></div>
+      <div class="col-2"><input type="text" name="weight" id="weight" onblur="calcBmi()"></div>
+
+      <div class="col-1"><span class="texttule">BMI:</span></div>
+      <div class="col-2"><input type="text" name="bmi" id="bmi" readonly></div>
+    </div>
+    <br>
+    <div class="row myrow">
+      <div class="col-1"><span class="texttule">Temperature:</span></div>
+      <div class="col-2"><input type="text" name="temp"></div>
+
+      <div class="col-1"><span class="texttule">Pulse:</span></div>
+      <div class="col-2"><input type="text" name="pulse"></div>
+
+      <div class="col-1"><span class="texttule">RR:</span></div>
+      <div class="col-2"><input type="text" name="rrate"></div>
+
+    </div>
+    <br>
+
+    <div class="row myrow">
+      <div style="display:block;">
+        <input type="time" id='visittime' name="vtime">
+        <input type="date" id='visitdate' name="vdate">
+        <input type="text" id='ptype' name="ptype" value="{{ptype}}">
+        <input type="text" id='regno' name="regno" value="{{row[1]}}">
+      </div>
+    </div>
+    <br>
+      <div class="row myrow">
+        <div class="col-5"></div>
+        <div class="col-3">
+          <input type="submit" value="Save"  style="height:40px;width:150px;">
+        </div>
+      </div>
+    </form>
+      {%endfor%}
+      <br>
+      {%if ack%}
+      <div class="row myrow">
+        <div class="col-5"></div>
+          <div class="col-3"><p>{{ack}}</p></div>
+      </div>
+      <div class="row myrow">
+          <form action="opd1" method='POST'>
+            <div style="display:block;">
+              <input type="text" name="regno" value="{{regno}}">
+              <input type="text" name="vdate" value="{{vd}}">
+            </div>
+              <div class="col-5"></div>
+              <div class="col-3">
+                <input type="submit" value="PRINT" style="height:40px;width:150px;">
+            </div>
+          </form>
+          {%endif%}
+  </div> <!--- Content --->
+</div><!--- col-12 --->
+
+
+
+
+
+
+
+
+{% endblock %}

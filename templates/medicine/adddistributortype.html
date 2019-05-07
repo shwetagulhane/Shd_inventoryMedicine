@@ -1,0 +1,23 @@
+{% extends "medicine/frame.html" %}
+{% block content %}
+<div class="col12">
+  <div id="content">
+    <div class="titlebox"> ADD DISTRIBUTOR TYPE</div>
+     <br>
+
+     <form action="add_distributorType" method="POST">
+		 <div class="col-3">
+          <span class="texttule">Distributor Type:</span>
+          <input type="text" name="dist_type_name" id="" placeholder="Distributor Type" >
+           </div>
+        
+		<div class="col-3">
+          <input type="submit" class="button" id='btnsave' value="ADD" style="height:30px;width:90px;">
+        </div>   
+        <br><br>
+        </form>
+        <div class="col=5"><p><b> {{ack}}</b></p></div>
+      </div>
+</div>
+
+{% endblock %}

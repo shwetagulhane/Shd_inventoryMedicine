@@ -1,0 +1,213 @@
+{% extends "Frame/framepage.html" %}
+{% block content %}
+
+<script>
+
+function showComapny()
+{
+  var pclass = document.getElementById('pclass').value;
+  if(pclass=='Company')
+  {
+    document.getElementById('companydiv').style.display = 'block';
+    document.getElementById('companyname').required = true;
+  }
+  else
+  {
+    document.getElementById('companydiv').style.display = 'none';
+    document.getElementById('companyname').required = false;
+  }
+}
+function matchname()
+{
+  var rtype = document.getElementById('rtype').value;
+  if(rtype =='Neighbour'  || rtype =='Other')
+    document.getElementById('rlname').value =  '';
+  else
+    document.getElementById('rlname').value =  document.getElementById('plname').value;
+}
+
+</script>
+
+<div class="col12">
+  <div id="content">
+    <div class="titlebox">Update Patient Registration</div>
+     <br>
+     <form action="UpdatePatientRecord" method="POST">
+       {%for row in ds%}
+       <div class="row myrow">
+         <div class="col-8">
+           <span class="texttule">Regno:</span>
+           <input type="text" name="regno" id="regno" value="{{row[1]}}">
+           <span class="texttule">Date:</span>
+           <input type="date" name="regdate" value="{{row[9]}}">
+           <span class="texttule">Time:</span>
+           <input type="time" name="regtime" value="{{row[25]}}">
+        </div>
+      </div>
+      <br>
+      <div class="row myrow">
+        <div class="col-6">
+        <span class="texttule">Patient Name:</span>
+        <input type="text" name="pfname" id="pfname" value="{{row[2]}}" required>
+        <input type="text" name="pmname" id="pmname" value="{{row[3]}}">
+        <input type="text" name="psname" id="plname" value="{{row[4]}}" required>
+      </div>
+
+        <div class="col-3">
+          <span class="texttule">Sex:</span>
+          <select name="sex" id='sex'  required>
+            <option style="font-weight:bold;" value="{{row[13]}}">{{row[13]}}</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Transgender">Transgender</option>
+          </select>
+        </div>
+
+        <div class="col-2">
+          <span class="texttule">Age:</span>
+          <input type="text" name="age" id='age' value="{{row[11]}}" style="max-width:70px;" required>
+
+          <select name="agetype" id="agetype">
+            <option style="font-weight:bold;" value="{{row[12]}}"><b>{{row[12]}}</b></option>
+            <option value="Year">Year</option>
+            <option value="Month">Month</option>
+            <option value="Day">Day</option>
+          </select>
+        </div>
+      </div>
+      <br>
+      <div class="row myrow">
+        <div class="col-2">
+          <span class="texttule">Relative Type:</span>
+          <select name="rtype" id="rtype" onchange="matchname()" required>
+            <option style="font-weight:bold;" value="{{row[5]}}"><b>{{row[5]}}</b></option>
+            <option value="Father">Father</option>
+            <option value="Mother">Mother</option>
+            <option value="Brother">Brother</option>
+            <option value="Sister">Sister</option>
+            <option value="Husband">Husband</option>
+            <option value="Wife">Wife</option>
+            <option value="Neighbour">Neighbour</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+        <div class="row myrow">
+          <div class="col-6">
+            <span class="texttule">Relative Name:</span>
+            <input type="text" name="rfname" id="rfname" value="{{row[6]}}" required>
+            <input type="text" name="rmname" id="rmname" value="{{row[7]}}">
+            <input type="text" name="rsname" id="rlname" value="{{row[8]}}" required>
+          </div>
+          <div class="col-3">
+            <span class="texttule">Occupation:</span>
+            <input type="text" name="occupation" id='occupation' value="{{row[15]}}" required>
+          </div>
+          <div class="col-3">
+            <span class="texttule">Education:</span>
+            <input type="text" name="education" id='education' value="{{row[14]}}" required>
+          </div>
+      </div>
+      <br>
+
+      <div class="row myrow">
+        <div class="col-3">
+          <span class="texttule">Contact:</span>
+          <input type="text" name="contactno" id='contactno' value="{{row[16]}}" required>
+        </div>
+        <div class="col-3">
+          <span class="texttule">Village:</span>
+          <input type="text" name="village"id='village' value="{{row[18]}}">
+        </div>
+        <div class="col-3">
+          <span class="texttule">Tahsil:</span>
+          <input type="text" name="tahsil" id='tahsil' value="{{row[19]}}">
+        </div>
+        <div class="col-3">
+          <span class="texttule">District:</span>
+          <select name="district" id='district'>
+            <option style="font-weight:bold;" value="{{row[25]}}"><b>{{row[26]}}</b></option>
+            <option value="">--Select--</option>
+            {%for dsname in disname%}
+              <option value="{{dsname[0]}}">{{dsname[1]}}</option>
+            {%endfor%}
+          </select>
+        </div>
+      </div>
+      <br>
+      <div class="row myrow">
+        <div class="col-3">
+          <span class="texttule">Address:</span>
+          <input type="text" name="address" id='address'value="{{row[21]}}" required>
+        </div>
+        <div class="col-3">
+          <span class="texttule">Aadhar No:</span>
+          <input type="text" name="aadharNo" id='aadharNo' value="{{row[23]}}">
+        </div>
+        <div class="col-3">
+          <span class="texttule">Cast:</span>
+          <select name="cast" id='cast' required>
+            <option style="font-weight:bold;" value="{{row[22]}}"><b>{{row[22]}}</b></option>
+            <option value="test1">Test1</option>
+            <option value="test2">Test2</option>
+          </select>
+        </div>
+        <div class="col-3">
+          <span class="texttule">Ration Card:</span>
+          <select name="rationcard" id='rationcard'  required>
+            <option style="font-weight:bold;" value="{{row[24]}}"><b>{{row[24]}}</b></option>
+            <option value="test2">Test2</option>
+          </select>
+        </div>
+      </div>
+      <br>
+        <div class="row myrow">
+        <div class="col-3">
+          <span class="texttule">Patient Category:</span>
+          <select name="pclass" id="pclass" onchange="showComapny()" required>
+            {%if row[17] == 'General' or row[17] == 'Staff' or row[17] == 'CMSS' %}
+              <option style="font-weight:bold;" value="{{row[17]}}">{{row[17]}}</option>
+            {%else%}
+                <option style="font-weight:bold;" value="Company">Company</option>
+            {%endif%}
+            <option value="General">General</option>
+            <option value="Staff">Staff</option>
+            <option value="CMSS">CMSS</option>
+            <option value="Company">Company</option>
+          </select>
+        </div>
+        {%if row[17] == 'General' or row[17] == 'Staff' or row[17] == 'CMSS' %}
+        <div class="col-3" id="companydiv" style="display:none;">
+          <span class="texttule">Company Name:</span>
+          <input type="text" name="cname" id='cname'>
+        </div>
+        {%else%}
+        <div class="col-3" id="companydiv" >
+          <span class="texttule">Company Name:</span>
+          <input type="text" name="cname" id='cname' value="{{row[17]}}">
+        </div>
+        {%endif%}
+      </div>
+
+      <br>
+      <div class="row myrow">
+        <div class="col-5"></div>
+        <div class="col-3">
+          <input type="submit" class="button" id='btnsave' value="UPDATE" style="height:40px;width:150px;">
+        </div>
+      </div>
+      {%endfor%}
+      <br>
+      <div class="row myrow"><div class="col-3"><p>{{ack}}</p></div></div>
+    </form>
+  </div> <!--- Content --->
+</div><!--- col-12 --->
+
+
+
+
+
+
+
+
+{% endblock %}

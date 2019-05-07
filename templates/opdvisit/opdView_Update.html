@@ -1,0 +1,110 @@
+{% extends "Frame/framepage.html" %}
+{% block content %}
+
+<style>
+.subtitle
+{
+background-color:#F0E68C;
+}
+.spnhead{
+  font-size: 20px;
+  font-weight: bold;
+}
+.spndata{
+  font-size: 18px;
+  font-weight: bold;
+}
+</style>
+
+<div class="col12">
+  <div id="content">
+    <div class="titlebox">Patient Vitals</div>
+    <div class="row" style="padding-bottom:2px;"></div>
+    {% for row in data1%}
+    <div class="row myrow subtitle">
+      <div class="col-2"><span class="spnhead">Regno:</span><span class="spndata">{{row[1]}}</span></div>
+      <div class="col-3"><span class="spnhead">Name:</span><span class="spndata">{{row[2]}} {{row[4]}} {{row[3]}}</span></div>
+      <div class="col-2"><span class="spnhead">Sex:</span><span class="spndata">{{row[13]}}</span></div>
+      <div class="col-2"><span class="spnhead">Age:</span><span class="spndata">{{row[11]}} {{row[12]}}</span></div>
+    </div>
+    {%endfor%}
+    <br>
+    {% for row in data2%}
+    <form action="OpdViewUpdate" method="POST">
+      <input type="text" name="opdid" value="{{row[0]}}" style="display:none;">
+      <input type="text" name="regno" value="{{row[1]}}" style="display:none;">
+    <div class="row myrow">
+      <div class="col-2"><span class="texttule">Date:</span>
+        <input type="date" name="vdate" value="{{row[3]}}" required>
+      </div>
+
+      <div class="col-2"><span class="texttule">Time:</span>
+        <input type="time" name="vtime" value="{{row[15]}}" required>
+      </div>
+
+      <div class="col-1"><span class="texttule">Complaint:</span></div>
+      <div class="col-2"><input type="text" name="complaint" value="{{row[13]}}" required></div>
+
+      <div class="col-4"><span class="texttule">Blood Pressure:</span>
+        <span class="texttule">Systolic:</span>
+        <input type="text" name="systolic" value="{{row[11]}}" style="width:60px;">
+        <span class="texttule">Diastolic:</span>
+        <input type="text" name="diastolic" value="{{row[12]}}" style="width:60px;">
+      </div>
+    </div>
+    <br>
+    <div class="row myrow">
+
+      <div class="col-1"><span class="texttule">Height:</span></div>
+      <div class="col-2"><input type="text" name="height" id="height" onblur="calcBmi()" value="{{row[5]}}"></div>
+
+      <div class="col-1"><span class="texttule">Weight:</span></div>
+      <div class="col-2"><input type="text" name="weight" id="weight" onblur="calcBmi()" value="{{row[6]}}"></div>
+
+      <div class="col-1"><span class="texttule">BMI:</span></div>
+      <div class="col-2"><input type="text" name="bmi" id="bmi" value="{{row[7]}}" readonly></div>
+    </div>
+    <br>
+    <div class="row myrow">
+      <div class="col-1"><span class="texttule">Temperature:</span></div>
+      <div class="col-2"><input type="text" name="temp" value="{{row[8]}}"></div>
+
+      <div class="col-1"><span class="texttule">Pulse:</span></div>
+      <div class="col-2"><input type="text" name="pulse" value="{{row[9]}}"></div>
+
+      <div class="col-1"><span class="texttule">RR:</span></div>
+      <div class="col-2"><input type="text" name="rrate" value="{{row[10]}}"></div>
+
+    </div>
+
+    <br>
+      <div class="row myrow">
+        <div class="col-5"></div>
+        <div class="col-3">
+          <input type="submit" value="UPDATE"  style="height:40px;width:150px;">
+        </div>
+      </div>
+    </form>
+    {%endfor%}
+      <br>
+      {%if ack%}
+      <div class="row myrow">
+        <div class="col-5"></div>
+          <div class="col-3"><p>{{ack}}</p></div>
+      </div>
+      <div class="row myrow">
+          <form action="getOpdViewUpdate" method='POST'>
+            <div class="row myrow">
+              <input type="text" name="regno" value="{{regno}}" style="display:none;">
+              <div class="col-5"></div>
+              <div class="col-3">
+                <input type="submit" value="GoBack" style="height:40px;width:150px;">
+              </div>
+          </form>
+          {%endif%}
+  </div> <!--- Content --->
+</div><!--- col-12 --->
+
+
+
+{% endblock %}

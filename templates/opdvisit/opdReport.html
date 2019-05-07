@@ -1,0 +1,57 @@
+{% extends "Frame/framepage.html" %}
+{% block content %}
+
+<div class="col12">
+  <div id="content">
+    <div class="titlebox">OPD Patient Visit Report</div>
+    <br>
+
+    <form action="oldpatientregno" method="POST">
+    <div class="row myrow">
+        <div class="col-3">
+            <span class="texttule">RegNo:</span>
+            <input type="text" name="regno" style="width:120px;" required>
+            <input type="submit" value="Search">
+        </div>
+      </form>
+
+    <br>
+  </div>
+  </div> <!--- Content --->
+</div><!--- col-12 --->
+<br>
+
+    <table border=2 width="100%" >
+    <thead>
+      <td>Action</td>
+      <td>Regno</td>
+      <td>Patient Name</td>
+      <td>Relative Name</td>
+      <td>Sex</td>
+      <td>Age</td>
+      <td>Village</td>
+      <td>Address</td>
+      <td>Contact No</td>
+      <td>Aadhar No</td>
+  </thead>
+  {%for row in ds%}
+  <tr>
+    <form action="opdVisit_redir" method="POST">
+      <td><input type="submit" value="Start Visit" ></td>
+      <input type="text" name="regno" value="{{row[1]}}" style="display:block;">
+  </form>
+    <td>{{row[1]}}</td>
+    <td>{{row[2]}} {{row[4]}} {{row[3]}}</td>
+    <td>{{row[5]}}:-{{row[6]}} {{row[8]}} {{row[7]}}</td>
+    <td>{{row[13]}}</td>
+    <td>{{row[14]}} {{row[15]}}</td>
+    <td>{{row[20]}}</td>
+    <td>{{row[21]}}</td>
+    <td>{{row[16]}}</td>
+    <td>{{row[23]}}</td>
+  </tr>
+  {%endfor%}
+
+  </table>
+
+{% endblock %}

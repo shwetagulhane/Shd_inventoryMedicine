@@ -1,0 +1,81 @@
+{% extends "Frame/framepage.html" %}
+{% block content %}
+<script>
+$(function()
+  {
+      $( "#ss" ).autocomplete
+      {
+          source: function( request, response )
+          {
+            var forname=document.getElementById('ss').value;
+              $.ajax
+              ({
+                  type:"POST",
+                  url: "getData",
+                  data:'ss='+ss,
+                  success: function( data )
+                  {
+                    alert(data);
+
+
+                    alert(data['d'][2]);
+                    response(data);
+                  }
+              });
+          },
+      });
+  };
+  </script>
+<div class="col12">
+  <div id="content">
+    <div class="titlebox">ADD MEDICINE</div>
+     <br>
+     <form action="new_med_Insert" method="POST">
+       <div class="col-3">
+          <span class="texttule">Medicine Type:</span>
+           <select name="med_type" id="med_type" onchange="">
+            <option value="">--Select--</option>
+            <option value="Tablet">Tablet</option>
+            <option value="Drop">Drop</option>
+            <option value="Syrup">Syrup</option>
+            <option value="Suspension">Suspension</option>
+            <option value="Litre">Litre</option>
+         </select>
+          </div>
+     <div class="row myrow">
+      <div class="col-3">
+       <span class="texttule">Drug Name:</span>
+       <input type="text" name="drug_name" id="" placeholder="Drug Name" >
+       </div>
+
+         <div class="col-3">
+          <span class="texttule">Minimum Value:</span>
+          <input type="text" name="min_value" id="" placeholder="Minimum Value" >
+        </div>
+        <div class="col-3">
+          <span class="texttule">Maximum Value:</span>
+          <input type="text" name="max_value" id="" placeholder="Maximum Value">
+        </div>
+        </div>
+          
+        <br>
+        <br>
+        <br>
+       
+          <div class="row myrow">
+        <div class="col-5"></div>
+        <div class="col-3">
+          <input type="submit" class="button" id='btnsave' value="Submit" style="height:30px;width:110px;">
+          </div> </div>
+        <br><br>
+        <div class="col=5"><p><b> {{ack}}</b></p></div>
+        
+        
+      
+      
+</div>
+
+</div>
+
+</form>
+{% endblock %}

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Shaheed Hospital</title>
+    <meta name ="viewport" content="width=device-width">
+
+   <link rel="stylesheet" type="text/css" href="static/css/homework.css">
+    <link rel="icon" type="image/jpeg" href="static/img/cross.png">
+
+<script type="text/javascript">
+ /*Image uploader*/
+  var loadFile = function(event) {
+    var output = document.getElementById('output');
+    output.src = URL.createObjectURL(event.target.files[0]);
+  };0
+
+  /*/end uploading*/
+
+function display_c(){
+var refresh=1000; // Refresh rate in milli seconds
+mytime=setTimeout('display_ct()',refresh)
+}
+
+function display_ct(){
+
+var today = new Date();
+var h = today.getHours();
+var m = today.getMinutes();
+var s = today.getSeconds();
+var dd = today.getDate();
+var mm = today.getUTCMonth()+1;
+var yy = today.getFullYear();
+m = checkTime(m);
+s = checkTime(s);
+
+dd = checkTime(dd);
+mm = checkTime(mm);
+
+document.getElementById('time').value = h + ":" + m + ":" + s;
+document.getElementById('date').value = dd + "/" + mm + "/" + yy;
+
+tt=display_c();
+}
+function checkTime(i){
+    if(i<10){i = "0" + i};
+    return i;
+}
+function insertCharge(){
+    var sel = document.getElementById("ptype");
+    var value = sel.options[sel.selectedIndex].value;
+    if(value=="new")
+        var val=20
+    else if(value=="old")
+        var val=10
+    else
+        var val=0
+
+    document.getElementById("charge").value=parseInt(val);
+    }
+
+</script>
+
+</head>
+<body onload="display_c()">
+<!-- header -->
+<div class="header">
+    <div class="section-inner">
+        <div class="row center" >
+            <div class="col-2">
+            <div id="txt"></div>
+            <p style="margin-top: 25px;">Date: <input type="text" id="date" value= "" disabled="true" size="8" /></p>
+            </div>
+            <div class="col-7">
+            <h2 class="title">Shaheed Hospital</h2>
+             <p style="text-align: center;">Dalli Rajhara Dist. Balod (Chhattisgarh)</p>
+             </div>
+             <div class="col-2 ">
+             <p style="margin-top: 25px; text-align: right;">Time: <input type="text" id="time" disabled="true" size="6" /></p>
+             </div>
+         </div>
+    </div>
+    <!-- /section-inner -->
+</div>
+<!--/header-->
+
+<!-- colors -->
+<div class="row">
+        <div class="red"></div>
+        <div class="green"></div>
+        <div class="white"></div>
+</div>
+<!-- colors End -->
+
+<div class="centerScreen">
+ <div class="row">
+ <div class="col-12">
+ <div class="loginScreen">
+ <form method="post" action="home">
+ <div class="col-3"><p >Name  </p> </div><div class="col-9"><p>: <input type="text" required name="username" style="border-radius:5px;height:25px;color:#545454;font-size:13px;font-weight:bold;"></p></div>
+ <div class="col-3"><p>Password </p> </div><div class="col-9"><p>: <input type="password" required name="password" style="border-radius:5px;height:25px;color:#545454;font-size:13px;font-weight:bold;"></p></div>
+ <div class="col-3"><p>Location </p> </div><div class="col-9"><p>:
+   <select name="location">
+     <option value="">--Select--</option>
+     <option value="newreg">NewRegistration</option>
+     <option value="oldpatient">OldPatient</option>
+     <option value="ward">Ward</option>
+   </select></p></div>
+    <div class="col-12"> <p><input type="submit" value="Login" style="height:35px;width:80px;float:right;margin-right:35px;background-color:rgba(0, 255, 31, 0.47);font-weight:bold;color:#fff"></p></div>
+
+ </form>
+ </div>
+</div>
+</div>
+</div>
+
+<div class="row" style="margin-top:80px">
+			{% if error=='1' %}
+			<!-- If error code is '1' that means the login credintials is invalid and diplaying correcsponding error message -->
+			<p style="text-align:center;padding-bottom:10px;color:red;font-weight:bold;">{% print('Invalid Credintals') %}</p>
+			{% elif error=='2' %}
+			<!-- If error code is '2' that means there is an error in accessing the database and diplaying correcsponding error message -->
+			<p style="text-align:center;padding-bottom:10px;color:red;font-weight:bold;">{% print('Database Error!') %}</p>
+			{% elif error=='3' %}
+			<!-- If error code is '3' that means the user is logged out and displaying corresponding message -->
+			<p style="text-align:center;padding-bottom:10px;color:green;font-weight:bold;">{% print('Logged Out Successfully!') %}</p>
+			{% endif %}
+</div
+
+
+<!-- footer -->
+<div class="footer">
+@crishmania@gmail.com
+<div class=""></div>
+</div>
+<!-- /footer -->
+</body>
+</html>

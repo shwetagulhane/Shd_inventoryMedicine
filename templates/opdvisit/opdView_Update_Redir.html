@@ -1,0 +1,137 @@
+{% extends "Frame/framepage.html" %}
+{% block content %}
+<style>
+
+#mainTable {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#mainTable td, #mainTable th {
+  padding: 8px;
+}
+
+#mainTable td{
+  padding: 8px;
+  font-size: 15px;
+}
+#mainTable tr:nth-child(even){background-color: #f2f2f2;}
+
+#mainTable tr:hover {background-color: #ddd;}
+
+#mainTable thead,th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  color: white;
+  font-size: 17px;
+}
+
+/* GENERAL CODE */
+
+
+/* SEPERATE CODE */
+#mainTable thead,th {
+  background-color:#778899;
+}
+/* SEPERATE CODE */
+
+.subtitle
+{
+background-color:#F0E68C;
+}
+.spnhead{
+  font-size: 20px;
+  font-weight: bold;
+}
+.spndata{
+  font-size: 18px;
+  font-weight: bold;
+}
+</style>
+<div class="col12">
+  <div id="content">
+    <div class="titlebox">View/Update Patient Visit</div>
+    <br>
+    <form action="getOpdViewUpdate" method="POST">
+    <div class="row myrow">
+        <div class="col-3">
+            <span class="texttule">RegNo:</span>
+            <input type="text" name="regno" style="width:120px;" required>
+            <input type="submit" value="Search">
+        </div>
+      </form>
+
+    <br>
+  </div>
+</div> <!--- Content --->
+</div><!--- col-12 --->
+<br>
+{%if ds1 != ''%}
+{%for row in ds1%}
+<div class="col-12 subtitle">
+  <div class="col-2"><span class="spnhead">Regno:</span><span class="spndata">{{row[1]}}</span></div>
+  <div class="col-3"><span class="spnhead">Name:</span><span class="spndata">{{row[2]}} {{row[3]}} {{row[4]}}</span></div>
+  <div class="col-3">
+    <span class="spnhead">{{row[5]}}:-</span>
+    <span class="spndata"> {{row[6]}} {{row[7]}} {{row[8]}}</span>
+  </div>
+  <div class="col-2"><span class="spnhead">Sex:</span><span class="spndata">{{row[13]}}</span></div>
+  <div class="col-2"><span class="spnhead">Age:</span><span class="spndata">{{row[11]}} {{row[12]}}</span></div>
+  <div class="col-2"><span class="spnhead">Village:</span><span class="spndata">{{row[18]}}</span></div>
+  <div class="col-2"><span class="spnhead">Address:</span><span class="spndata">{{row[21]}}</span></div>
+</div>
+<br>
+{%endfor%}
+{%else%}
+  <br>
+  <div class="row myrow">
+    <div class="col-3">{{ack1}}</div>
+  </div>
+{%endif%}
+{%if ds1!='' and ds2 !=''%}
+<div class="row myrow">&nbsp;&nbsp;&nbsp;&nbsp;</div>
+    <table id="mainTable" >
+    <thead>
+      <th>Action</th>
+      <th>Complaint</th>
+      <th>Visit Date</th>
+      <th>Height</th>
+      <th>Weight</th>
+      <th>BMI</th>
+      <th>BP</th>
+      <th>Pulse</th>
+      <th>Temp</th>
+      <th>RR</th>
+  </thead>
+    {%for row in ds2%}
+    <tr>
+    <form action="OpdViewUpdateShow" method="POST">
+      {%for rows in ds1%}
+      <input type="text" name="regno" value="{{rows[1]}}" style="display:none;">
+      {%endfor%}
+    <input type="text" name="opdid" value="{{row[0]}}" style="display:none;">
+    <td><input type="submit" value="EDIT" ></td>
+    <td>{{row[1]}}</td>
+    <td>{{row[2]}}</td>
+    <td>{{row[3]}}</td>
+    <td>{{row[4]}}</td>
+    <td>{{row[5]}}</td>
+    <td>{{row[6]}}/{{row[7]}}</td>
+    <td>{{row[8]}}</td>
+    <td>{{row[9]}}</td>
+    <td>{{row[10]}}</td>
+  </tr>
+</form>
+{%endfor%}
+</table>
+
+  {%else%}
+  <br>
+  <div class="row myrow">
+    <div class="col-3">{{ack2}}</div>
+  </div>
+{%endif%}
+
+{%endblock%}

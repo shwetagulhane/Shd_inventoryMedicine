@@ -1,0 +1,28 @@
+{% extends "Frame/framepage.html" %}
+{% block content %}
+
+
+
+
+<div class="col12">
+  <div id="content">
+    <div class="titlebox">Admit Patient</div>
+    <br>
+
+    <form action="admitPatient" method="POST">
+    <div class="row myrow">
+        <div class="col-3">
+            <span class="texttule">RegNo:</span>
+            <input type="text" name="regno" style="width:120px;">
+            <input type="submit" value="Search">
+        </div>
+    </form>
+    <br>
+  </div>
+  </div> <!--- Content --->
+</div><!--- col-12 --->
+
+
+
+
+{% endblock %}

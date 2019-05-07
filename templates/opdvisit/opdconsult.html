@@ -1,0 +1,451 @@
+{% extends "Frame/framepage.html" %}
+{% block content %}
+
+<script>
+
+function display_c(){
+var refresh=1000; // Refresh rate in milli seconds
+mytime=setTimeout('display_ct()',refresh)
+}
+
+function display_ct(){
+
+var today = new Date();
+var h = today.getHours();
+var m = today.getMinutes();
+var s = today.getSeconds();
+var dd = today.getDate();
+var mm = today.getUTCMonth()+1;
+var yy = today.getFullYear();
+m = checkTime(m);
+s = checkTime(s);
+
+dd = checkTime(dd);
+mm = checkTime(mm);
+
+
+
+document.getElementById('hisdate').value = yy + "-" + mm + "-" + dd;
+
+document.getElementById('refdate').value = yy + "-" + mm + "-" + dd;
+
+document.getElementById('meddate').value = yy + "-" + mm + "-" + dd;
+
+document.getElementById('diadate').value = yy + "-" + mm + "-" + dd;
+
+
+
+tt=display_c();
+}
+
+</script>
+
+<style>
+.subtitle
+{
+background-color:#F0E68C;
+width: 100%;
+}
+.spnhead{
+  font-size: 20px;
+  font-weight: bold;
+}
+.spndata{
+  font-size: 20px;
+}
+
+
+		.container{
+			width: 100%;
+      padding-right: 0px;
+      padding-left: 0px;
+      margin-right: auto;
+      margin-left: auto;
+		}
+
+
+
+		ul.tabs{
+			margin: 0px;
+			padding: 0px;
+			list-style: none;
+		}
+		ul.tabs li{
+			background: none;
+			display: inline-block;
+			padding: 8px 15px;
+      padding-right:100px;
+      cursor: pointer;
+      color: #222;
+      font-size: 18px;
+		}
+
+		ul.tabs li.current{
+			background: #87CEEB	;
+			color: #222;
+      font-weight: bold;
+      border: 1px ;
+      border-radius: 7px;
+		}
+
+		.tab-content{
+			display: none;
+			background: #FFFAFA;
+			padding: 15px;
+
+		}
+
+		.tab-content.current{
+			display: inherit;
+		}
+</style>
+
+<script>
+$(document).ready(function(){
+	$('ul.tabs li').click(function(){
+		var tab_id = $(this).attr('data-tab');
+
+		$('ul.tabs li').removeClass('current');
+		$('.tab-content').removeClass('current');
+
+		$(this).addClass('current');
+		$("#"+tab_id).addClass('current');
+	})
+
+})
+
+function changeDoctor()
+{
+  if(document.getElementById('hospital').value=='OutSide'){
+    document.getElementById('shd').style.display='none';
+    document.getElementById('dname').required=false;
+    }
+  else{
+    document.getElementById('shd').style.display='block';
+    document.getElementById('dname').required=true;
+  }
+}
+
+// THIS IS A SCRIPT FOR ADDING AND REMOVING DIGNOSIS.
+
+$(document).ready(function(){
+    $("#add-row-dia").click(function(){
+      var valu = document.getElementById('pdiagno').value;
+      var i,did='',dname=valu.split("# ").pop();
+      for(i=0;i<=valu.length;i++)
+      {
+        if(valu[i]=='#')
+          break;
+        else
+          did = did+valu[i];
+      }
+        mark = "";
+        var chk = "<tr><td><input type='checkbox' name='record'></td>";
+        mark = mark + chk
+        var name = "<td><input type='text' name='dianame' value='"+dname+"' placeholder='Name' readonly></td>";
+        mark = mark + name;
+        var dtype = "<td><select name='diagnosisType'><option value='Provisional Diagnosis'>Provisional Diagnosis</option><option value='Final Diagnosis'>Final Diagnosis</option></td>";
+        mark = mark + dtype
+        var did = "<td><input type='text' name='diagnosisId' id='d1' value='"+did+"' placeholder='Name' style='display:none;'></td>";
+        mark = mark + did
+        $("#Diagnosis tbody").append(mark);
+        document.getElementById('pdiagno').value='';
+    });
+
+    // Find and remove selected table rows
+    $("#delete-row-dia").click(function(){
+        $("#Diagnosis tbody").find('input[name="record"]').each(function(){
+          if($(this).is(":checked")){
+                $(this).parents("tr").remove();
+            }
+        });
+    });
+});
+
+
+
+
+
+
+
+
+//AUTOCOMPLETE Diagnosis
+$(function() {
+    $( "#pdiagno" ).autocomplete({
+        source: function( request, response ) {
+          var pdiagno=document.getElementById('pdiagno').value;
+            $.ajax({
+                type:"POST",
+                url: "getOpdDiagnosis",
+                data:'pdiagno='+pdiagno,
+                success: function( data ) {
+                  response(data);
+                }
+            });
+        },
+    });
+});
+
+// INSERT DATA USING AJAX
+$(document).ready(function () {
+$('form').submit(function (e) {
+  var formurl = $(this).attr('action');
+
+        $.ajax({
+            type: "POST",
+            url: $(this).attr('action'), // url to post to, from the forms action
+            data: $(this).serialize(),
+            success: function (data) {
+
+              if (formurl == 'opdConsultHistory' && data['ack']=='DATA SUCCESSFULLY STORED!'){
+                $("#ohsave").prop('disabled', true);
+                document.getElementById('hisack').innerHTML = data['ack'];
+              }
+              else if(formurl == 'opdConsultRefer' && data['ack']=='DATA SUCCESSFULLY STORED!'){
+                $("#orsave").prop('disabled', true);
+                document.getElementById('refack').innerHTML = data['ack'];
+              }
+              else if(formurl == 'opdDiagnosis' && data['ack']=='DATA SUCCESSFULLY STORED!'){
+                $("#odsave").prop('disabled', true);
+                document.getElementById('diaack').innerHTML = data['ack'];
+              }
+            alert(data['ack']);
+            }
+        })
+        e.preventDefault(); // block the traditional submission of the form.
+    });
+  });
+
+
+</script>
+
+<div class="col12">
+  <div id="content">
+    <div class="titlebox">Consultation
+    <span align="right">Dr. ABD </span>
+    </div>
+    <div class="row" style="padding-bottom:2px;"></div>
+    {% for row in ds1%}
+    <div class="row myrow subtitle">
+      <div class="col-2"><span class="spnhead">Regno:</span><span class="spndata">{{row[1]}}</span></div>
+      <div class="col-3"><span class="spnhead">Name:</span><span class="spndata">{{row[2]}} {{row[4]}} {{row[3]}}</span></div>
+      <div class="col-2"><span class="spnhead">Sex:</span><span class="spndata">{{row[13]}}</span></div>
+      <div class="col-2"><span class="spnhead">Age:</span><span class="spndata">{{row[11]}} {{row[12]}}</span></div>
+    </div>
+    {%endfor%}
+    <div class="row" style="padding-bottom:2px;"></div>
+    <div class="container">
+
+    	<ul class="tabs">
+    		<li class="tab-link current" data-tab="tab-1">Vitals</li>
+        <li class="tab-link" data-tab="tab-2">History&Clinical</li>
+        <li class="tab-link" data-tab="tab-3">Refer To</li>
+        <li class="tab-link" data-tab="tab-4">Diagnosis</li>
+        <li class="tab-link" data-tab="tab-5">Medicine</li>
+    	</ul>
+
+      <div id="tab-1" class="tab-content current"><!--- VITAL TAB STRAT--->
+        {%for rec in ds2 %}
+        <br>
+        <div class="row myrow ">
+          <div class="col-2">
+            <span class="spnhead">Compalint:</span>
+          </div>
+          <div class="col-2">
+            <span class="spndata">{{rec[13]}}</span>
+          </div>
+        </div>
+
+        <div class="row myrow ">
+          <div class="col-2">
+            <span class="spnhead">BLOOD PRESSURE:</span>
+          </div>
+          <div class="col-2">
+            <span class="spndata">{{rec[11]}}/{{rec[12]}}</span>
+          </div>
+        </div>
+
+        <div class="row myrow ">
+          <div class="col-2">
+            <span class="spnhead">Height:</span>
+          </div>
+          <div class="col-2">
+            <span class="spndata">{{rec[5]}} C.M.</span>
+          </div>
+        </div>
+
+        <div class="row myrow ">
+          <div class="col-2">
+            <span class="spnhead">Weight:</span>
+          </div>
+          <div class="col-2">
+            <span class="spndata">{{rec[6]}} K.G.</span>
+          </div>
+        </div>
+        <div class="row myrow ">
+          <div class="col-2">
+            <span class="spnhead">BMI:</span>
+          </div>
+          <div class="col-2">
+            <span class="spndata">{{rec[7]}}</span>
+          </div>
+        </div>
+      <div class="row myrow ">
+        <div class="col-2">
+          <span class="spnhead">TEMPERATURE:</span>
+        </div>
+        <div class="col-2">
+          <span class="spndata">{{rec[8]}} F</span>
+        </div>
+     </div>
+      <div class="row myrow ">
+        <div class="col-2">
+          <span class="spnhead">PULSE:</span>
+        </div>
+        <div class="col-2">
+          <span class="spndata">{{rec[9]}}</span>
+        </div>
+      </div>
+      <div class="row myrow ">
+        <div class="col-2">
+          <span class="spnhead">RR:</span>
+        </div>
+        <div class="col-2">
+          <span class="spndata">{{rec[10]}}</span>
+        </div>
+      </div>
+    {%endfor%}
+    <br>
+    </div><!---END OF VITAL TAB   --->
+
+
+    <div id="tab-2" class="tab-content"><!---INVESTIGATION TAB   --->
+      <br>
+      <form action="opdConsultHistory" id="formdata">
+        {% for row in ds1%}
+        <input type="text" name="regno" value="{{row[1]}}" style="display:none;">
+        {%endfor%}
+        {%for row in ds2 %}
+        <input type="text" name="opdid" value="{{row[0]}}" style="display:none;">
+        {%endfor%}
+        <textarea name="hiscli" rows="10" cols="50" required></textarea>
+        <div class="col-3" style="display:block;">
+          <input type="date" id="hisdate" name="hcdate" placeholder="Reason" >
+          <input type="text" name="docid" value="101">
+        </div>
+        <br>
+        <div class="col-2"></div>
+        <input type="submit" value="Save" id="ohsave">
+      </form>
+      <br>
+      <p id="hisack"></p>
+
+    </div><!---END OF INVESTIGATION TAB   --->
+
+    <div id="tab-3" class="tab-content"><!---REFER TAB   --->
+      <br>
+      <form action="opdConsultRefer" id="formdata">
+        <div class="row myrow">
+          {% for row in ds1%}
+          <input type="text" name="regno" value="{{row[1]}}" style="display:none;">
+          {%endfor%}
+          {%for row in ds2 %}
+          <input type="text" name="opdid" value="{{row[0]}}" style="display:none;">
+          {%endfor%}
+          <div class="col-3" >
+            <span class="texttule">Reason:</span>
+            <input type="text" name="reason" placeholder="Reason" required>
+          </div>
+          <div class="col-3" style="display:block;">
+            <input type="date" id="refdate" name="refdate" placeholder="Reason" >
+          </div>
+
+          <div class="col-2"><span class="texttule">Hospital:</span>
+            <select name="hname" id="hospital" onchange="changeDoctor()">
+              <option value="SHD">Shaheed Hospital</option>
+              <option value="OutSide">OutSide</option>
+            </select>
+          </div>
+          <input type="text" name="referby" value="101" style="display:none;">
+          <div class="col-2" id="shd">
+            <span class="texttule">Doctor:</span>
+            <select name="referto" id="dname" required>
+              <option value="">select</option>
+              <option value="102">D1</option>
+              <option value="103">D2</option>
+            </select>
+          </div>
+          <div class="col-2"><input type="submit" id="orsave" value="Save"></div>
+        </div>
+    </form>
+    <br>
+    <p id="refack"></p>
+  </div><!--- END OF REFER TAB   --->
+
+
+
+    <div id="tab-4" class="tab-content"><!---DIAGNOSIS TAB   --->
+      <div class="row myrow">
+        <div class="col-6">
+          <span class="texttule">Diagnosis:</span>
+          <div class="ui-widget">
+            <input type="text" id="pdiagno" name ="pdiagno" placeholder="DiagnosisName" >
+            <input type="button" class="add-row" id="add-row-dia" value="Add Row" >
+            <input type="button" class="delete-row" id="delete-row-dia" value="Delete Row">
+          </div>
+        </div>
+      </div>
+      <form action="opdDiagnosis" id="formdata">
+        {% for row in ds1%}
+        <input type="text" name="regno" value="{{row[1]}}" style="display:none;">
+        {%endfor%}
+        {%for row in ds2 %}
+        <input type="text" name="opdid" value="{{row[0]}}" style="display:none;">
+        {%endfor%}
+
+        <div class="col-3" style="display:block;">
+          <input type="date" id="diadate" name="diagnosisDate" >
+        </div>
+
+        <table border=1 id="Diagnosis" >
+            <thead>
+                <tr>
+                    <th>Select</th>
+                    <th>Name</th>
+                    <th>Marked As</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+
+        <div class="col-2"><input type="submit" id="odsave" value="Save"></div>
+      </form>
+        <p id="diaack"></p>
+    </div> <!---END OF DIAGNOSIS TAB   --->
+
+
+    <div id="tab-5" class="tab-content"><!---MEDICINE TAB   --->
+      <div class="col-3" style="display:block;">
+        <input type="date" id="meddate" name="refdate" placeholder="Reason" >
+      </div>
+    </div><!---END OF MEDICINE TAB   --->
+
+
+
+
+  </div><!-- container -->
+
+  </div> <!--- Content --->
+</div><!--- col-12 --->
+
+
+
+
+
+
+
+
+{% endblock %}

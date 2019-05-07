@@ -1,0 +1,80 @@
+{% extends "Frame/framepage.html" %}
+{% block content %}
+
+<script>
+function display_c(){
+var refresh=1000; // Refresh rate in milli seconds
+mytime=setTimeout('display_ct()',refresh)
+}
+
+function display_ct(){
+
+var today = new Date();
+var h = today.getHours();
+var m = today.getMinutes();
+var s = today.getSeconds();
+var dd = today.getDate();
+var mm = today.getUTCMonth()+1;
+var yy = today.getFullYear();
+m = checkTime(m);
+s = checkTime(s);
+
+dd = checkTime(dd);
+mm = checkTime(mm);
+
+
+document.getElementById('condate').value = yy + "-" + mm + "-" + dd;
+tt=display_c();
+}
+</script>
+
+<style>
+.subtitle
+{
+background-color:#F0E68C;
+}
+.spnhead{
+  font-size: 20px;
+  font-weight: bold;
+}
+.spndata{
+  font-size: 18px;
+  font-weight: bold;
+}
+</style>
+<div class="col12">
+  <div id="content">
+    <div class="titlebox">Consult To Doctor</div>
+    <br>
+
+    <form action="getOpdConsult" method="POST">
+    <div class="row myrow">
+        <div class="col-3">
+            <span class="texttule">RegNo:</span>
+            <input type="text" name="regno" style="width:120px;" required>
+            <input type="date" id="condate"  name="tdate" style="display:block;">
+
+            <input type="submit" value="Search">
+        </div>
+      </form>
+
+    <br>
+  </div>
+</div> <!--- Content --->
+</div><!--- col-12 --->
+
+<br>
+
+{%if ack1 != ' '%}
+  <div class="row myrow">
+    <div class="col-3">{{ack1}}</div>
+  </div>
+{%endif%}
+
+{%if ack2 !=' '%}
+  <div class="row myrow">
+    <div class="col-3">{{ack2}}</div>
+  </div>
+{%endif%}
+
+{%endblock%}

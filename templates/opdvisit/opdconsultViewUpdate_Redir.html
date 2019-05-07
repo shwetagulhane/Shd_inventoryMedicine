@@ -1,0 +1,58 @@
+{% extends "Frame/framepage.html" %}
+{% block content %}
+<style>
+.subtitle
+{
+background-color:#F0E68C;
+}
+.spnhead{
+  font-size: 20px;
+  font-weight: bold;
+}
+.spndata{
+  font-size: 18px;
+  font-weight: bold;
+}
+</style>
+<div class="col12">
+  <div id="content">
+    <div class="titlebox">View/Update Patient Consult</div>
+    <br>
+
+    <form action="getOpdConsultData" method="POST">
+    <div class="row myrow">
+        <div class="col-3">
+            <span class="texttule">RegNo:</span>
+            <input type="text" name="regno" style="width:120px;" required>
+            <input type="submit" value="Search">
+        </div>
+      </form>
+
+    <br>
+  </div>
+</div> <!--- Content --->
+</div><!--- col-12 --->
+
+{%if ds1 != ''%}
+{%for row in ds1%}
+<div class="row myrow subtitle" style="margin-top:1%;">
+  <div class="col-2"><span class="spnhead">Regno:</span><span class="spndata">{{row[1]}}</span></div>
+  <div class="col-3"><span class="spnhead">Name:</span><span class="spndata">{{row[2]}} {{row[3]}} {{row[4]}}</span></div>
+  <div class="col-3"><span class="spnhead">{{row[5]}}:-</span>
+    <span class="spndata"> {{row[6]}} {{row[7]}} {{row[8]}}</span></div>
+  <div class="col-2"><span class="spnhead">Sex:</span><span class="spndata">{{row[13]}}</span></div>
+  <div class="col-2"><span class="spnhead">Age:</span><span class="spndata">{{row[11]}} {{row[12]}}</span></div>
+</div>
+
+<div class="row myrow subtitle">
+  <div class="col-2"><span class="spnhead">Village:</span><span class="spndata">{{row[18]}}</span></div>
+  <div class="col-2"><span class="spnhead">Address:</span><span class="spndata">{{row[21]}}</span></div>
+</div>
+{%else%}
+  <br>
+  <div class="row myrow">
+    <div class="col-3">{{ack1}}</div>
+  </div>
+{%endfor%}
+{%endif%}
+{%endblock%}
